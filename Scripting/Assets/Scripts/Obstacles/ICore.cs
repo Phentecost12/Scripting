@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-namespace ClasesVacias
+public interface ICore
 {
-    interface ICore
+    public void cuandoMuere()
     {
-        public void cuandoMuere()
-        {
 
-        }
+    }
 
-        public void cuandoGana()
-        {
+    public void cuandoGana()
+    {
 
-        }
     }
 }
