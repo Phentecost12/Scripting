@@ -7,7 +7,7 @@ public interface ICore
 {
     public void cuandoMuere()
     {
-
+        
     }
 
     public void cuandoGana()
