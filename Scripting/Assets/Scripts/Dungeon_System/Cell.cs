@@ -1,28 +1,22 @@
-﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-//using ClasesVacias;
+using UnityEngine;
 
 namespace Code_DungeonSystem
-{
-    class Cell
     {
-        public float ID;
-        //Obstaculo Obstaculo = new Obstaculo();
-
-        public Cell()
+    public class Cell : MonoBehaviour
+    {
+        // Start is called before the first frame update
+        void Start()
         {
 
         }
 
-        public void generarEntidad()
-        {
-
-        }
-
-        public void jugadorIngresa()
+        // Update is called once per frame
+        void Update()
         {
 
         }
     }
 }
+
