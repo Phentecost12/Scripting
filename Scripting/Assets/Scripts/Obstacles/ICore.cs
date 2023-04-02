@@ -5,12 +5,12 @@ using UnityEngine;
 
 public interface ICore
 {
-    public void cuandoMuere()
+    void cuandoMuere()
     {
         
     }
 
-    public void cuandoGana()
+    void cuandoGana(int suma)
     {
 
     }
