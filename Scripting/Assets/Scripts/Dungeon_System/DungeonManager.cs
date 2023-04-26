@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -13,6 +14,8 @@ namespace Code_DungeonSystem
         [SerializeField] private int height;
         [Header("Tamaño de las celdas")]
         [SerializeField] private float cellSize;
+        [Header("Celda")]
+        [SerializeField] private Sprite cellSprite;
 
         private void Start()
         {
@@ -32,7 +35,7 @@ namespace Code_DungeonSystem
 
         private void GenerateDungeon(int width, int height, float cellSize) 
         {
-            //grid = new Grid<Cell>(width, height, cellSize, () => new Cell());
+            grid = new Grid<Cell>(width, height, cellSize, (Grid<Cell> g, int x, int y) => new Cell(g, x, y),cellSprite);
         }
     }
 
@@ -43,18 +46,22 @@ namespace Code_DungeonSystem
         private float cellSize;
         private TGridObject[,] gridArray;
         private TextMesh[,] debugTextMesh;
+        private GameObject[,] cellPrefab;
+        private Sprite cellSprite;
 
         public int GetWidth { get => width;}
         public int GetHeight { get => height;}
 
-        public Grid(int width, int height, float cellSize, Func<Grid<TGridObject>,int, int, TGridObject> CreateGridObject)
+        public Grid(int width, int height, float cellSize, Func<Grid<TGridObject>,int, int, TGridObject> CreateGridObject, Sprite cellSprite)
         {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
+            this.cellSprite= cellSprite;
 
             gridArray = new TGridObject[width, height];
-            debugTextMesh = new TextMesh[width, height]; //Visual Testing
+            debugTextMesh = new TextMesh[width, height]; //Visual
+            cellPrefab= new GameObject[width, height];
 
             for (int x = 0; x < gridArray.GetLength(0); x++)
             {
@@ -65,21 +72,25 @@ namespace Code_DungeonSystem
                 }
             }
 
-            //Visual Testing
+            //Visual
             /////////////////////////////////////////////////////////////////////
+            int count = 0;
             for (int i = 0; i < gridArray.GetLength(0); i++)
             {
                 for (int j = 0; j < gridArray.GetLength(1); j++)
                 {
                     
                     debugTextMesh[i, j] = CreateWorldText(null, gridArray[i, j].ToString(), GridToWorld(i, j) + new Vector3(cellSize, cellSize) * .5f, 20, Color.white, TextAnchor.MiddleCenter, TextAlignment.Center, 5000);
-                    Debug.DrawLine(GridToWorld(i, j), GridToWorld(i, j + 1), Color.white, 100f);
-                    Debug.DrawLine(GridToWorld(i, j), GridToWorld(i + 1, j), Color.white, 100f);
-                    
+                    cellPrefab[i, j] = new GameObject("Cell " + count);
+                    SpriteRenderer spriteRenderer = cellPrefab[i, j].AddComponent<SpriteRenderer>();
+                    spriteRenderer.sortingOrder = -1;
+                    spriteRenderer.sprite = cellSprite;
+                    spriteRenderer.color= Color.black;
+                    cellPrefab[i, j].transform.localScale = new Vector3(cellSize, cellSize);
+                    cellPrefab[i, j].transform.position = GridToWorld(i, j) + new Vector3(cellSize, cellSize) * .5f;
+                    count++;
                 }
             }
-            Debug.DrawLine(GridToWorld(0, height), GridToWorld(width, height), Color.white, 100f);
-            Debug.DrawLine(GridToWorld(width, 0), GridToWorld(width, height), Color.white, 100f);
             //////////////////////////////////////////////////////////////////////
         }
 

@@ -5,21 +5,20 @@ using UnityEngine;
 
 public class PathFinding
 {
-    private int MOVE_DIAGONAL_COST = 14;
-    private int MOVE_STRAIGHT_COST = 10;
-
     private Grid<CellTesting> grid;
     private List<CellTesting> openList;
     private List<CellTesting> closeList;
     public PathFinding(int width, int height) 
     {
-        grid = new Grid<CellTesting>(width,height,10f, (Grid<CellTesting> g, int x, int y) => new CellTesting(g, x,y));
+        //grid = new Grid<CellTesting>(width,height,10f, (Grid<CellTesting> g, int x, int y) => new CellTesting(g, x,y));
     }
 
-    public List<CellTesting> FingPath(int startX, int startY, int endX, int endY) 
+    public List<CellTesting> FindPath(int startX, int startY, int endX, int endY) 
     {
         CellTesting startCell = grid.GetValue(startX, startY);
         CellTesting endCell = grid.GetValue(endX, endY);
+
+        Player P = new Player();
 
         openList= new List<CellTesting> { startCell };
         closeList= new List<CellTesting>();
@@ -29,38 +28,29 @@ public class PathFinding
             for (int y = 0; y < grid.GetHeight; y++)
             {
                 CellTesting cell = grid.GetValue(x, y);
-                cell.gCost = int.MaxValue;
-                cell.CalculateFCost();
                 cell.lastNode = null;
             }
         }
 
-        startCell.gCost = 0;
-        startCell.hCost = CalculateDistance(startCell,endCell);
-        startCell.CalculateFCost();
-
         while (openList.Count>0)
         {
-            CellTesting currentCell = GetLowesFcostCell(openList);
+            CellTesting currentCell = GetHighestPowerCell(openList);
             if (currentCell == endCell) 
             {
                 return CalculatePath(endCell);
             }
 
             openList.Remove(currentCell);
+            P.cuandoGana(currentCell.OBS.Power);
             closeList.Add(currentCell);
 
             foreach (CellTesting cell in GetNeighboursList(currentCell))
             {
                 if (closeList.Contains(cell)) continue;
 
-                int tentativeGCost = currentCell.gCost + CalculateDistance(currentCell, cell);
-                if (tentativeGCost < cell.gCost) 
+                if (P.poderActual > cell.OBS.Power) 
                 {
                     cell.lastNode = currentCell;
-                    cell.gCost = tentativeGCost;
-                    cell.hCost = CalculateDistance(cell, endCell);
-                    cell.CalculateFCost();
 
                     if (!openList.Contains(cell))
                     {
@@ -117,26 +107,17 @@ public class PathFinding
         path.Reverse();
         return path;
     }
-
-    private int CalculateDistance(CellTesting a, CellTesting b)  
+    private CellTesting GetHighestPowerCell(List<CellTesting> cellList) 
     {
-        int xDistance = Mathf.Abs(a.x- b.x);
-        int yDistance = Mathf.Abs(a.y- b.y);
-        int remaining = Mathf.Abs(xDistance- yDistance);
-        return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining; 
-    }
-
-    private CellTesting GetLowesFcostCell(List<CellTesting> cellList) 
-    {
-        CellTesting low = cellList[0];
+        CellTesting high = cellList[0];
         for (int i = 0; i < cellList.Count; i++)
         {
-            if (cellList[i].fCost < low.fCost)
+            if (cellList[i].OBS.Power > high.OBS.Power)
             {
-                low = cellList[i];
+                high = cellList[i];
             }
         }
 
-        return low;
+        return high;
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, ICore
+public class Player :ICore
 {
     [SerializeField] int PoderBase = 5;
     public int poderActual;
@@ -10,17 +10,10 @@ public class Player : MonoBehaviour, ICore
     [SerializeField] int VidaBase = 3;
     public int vidaActual;
 
-    // Start is called before the first frame update
-    void Start()
+    public Player() 
     {
         vidaActual = VidaBase;
         poderActual = PoderBase;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     
     public void GetEquipment(int TypeE)

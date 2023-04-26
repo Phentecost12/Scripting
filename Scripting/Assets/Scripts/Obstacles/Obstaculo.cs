@@ -3,26 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Obstaculo : MonoBehaviour
+public class Obstaculo
 {
     [Header("Power")]
     int power;
     public int probabilidadMin = 1;     //Temporalmente públicos para revisar que valores llevan a una buena progresión
-    public int probabilidadMax = 15;
+    public int probabilidadMax = 10;
 
-    public Obstaculo(int power)
+    public int Power { get => power;}
+
+    public Obstaculo(int x)
     {
-        this.power = power;
+        int G = GetPower();
+        power = G * x + 1;
     }
 
-    void Start()
+    public int GetPower()
     {
-        
-    }
-
-    public void GetPower()
-    {
-        power = Random.Range(probabilidadMin, probabilidadMax);
+        return Random.Range(probabilidadMin, probabilidadMax);
     }
 
     public int ScalePower(int power, int powerScale)
