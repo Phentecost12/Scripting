@@ -1,17 +1,18 @@
-using Code_DungeonSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 using Random = UnityEngine.Random;
 
-public class Mago : Obstaculo
+public class Equipment
 {
-    private Elementos element;
+    Elementos element;
+    int power;
 
-    public Mago(int power , Cell cell) : base(power, cell)
+    public Equipment(int power)
     {
-        
+        this.power = power;
 
         int i = Random.Range(0, 3);
 
@@ -19,4 +20,5 @@ public class Mago : Obstaculo
     }
 
     public Elementos Element { get => element; }
+    public int Power { get => power; }
 }

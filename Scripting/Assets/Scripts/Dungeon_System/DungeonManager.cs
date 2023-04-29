@@ -8,7 +8,6 @@ namespace Code_DungeonSystem
     class DungeonManager : MonoBehaviour
     {
         private Grid<Cell> grid;
-        private Camera Cam;
         [Header("Tamaño de la cuadricula")]
         [SerializeField] private int width;
         [SerializeField] private int height;
@@ -16,26 +15,30 @@ namespace Code_DungeonSystem
         [SerializeField] private float cellSize;
         [Header("Celda")]
         [SerializeField] private Sprite cellSprite;
+        public static DungeonManager Instance { get; private set; } = null;
+        public Grid<Cell> Grid { get => grid;}
 
-        private void Start()
+        private void Awake()
         {
-            Cam = Camera.main;
-            GenerateDungeon(width, height, cellSize);
-        }
-
-        private void Update()
-        {
-            /*if (Input.GetMouseButtonDown(0))
+            if (Instance != null)
             {
-                Vector3 WorldPos = Cam.ScreenToWorldPoint(Input.mousePosition);
-                WorldPos.z = 0;
-                grid.SetValue(WorldPos, 56);
-            }*/
+                Destroy(this);
+                return;
+            }
+
+            Instance = this;
+
+            GenerateDungeon(width, height, cellSize);
         }
 
         private void GenerateDungeon(int width, int height, float cellSize) 
         {
             grid = new Grid<Cell>(width, height, cellSize, (Grid<Cell> g, int x, int y) => new Cell(g, x, y),cellSprite);
+        }
+
+        public Cell GetStartCell()
+        {
+            return grid.GetValue(0, 0);
         }
     }
 
@@ -83,7 +86,7 @@ namespace Code_DungeonSystem
                     debugTextMesh[i, j] = CreateWorldText(null, gridArray[i, j].ToString(), GridToWorld(i, j) + new Vector3(cellSize, cellSize) * .5f, 20, Color.white, TextAnchor.MiddleCenter, TextAlignment.Center, 5000);
                     cellPrefab[i, j] = new GameObject("Cell " + count);
                     SpriteRenderer spriteRenderer = cellPrefab[i, j].AddComponent<SpriteRenderer>();
-                    spriteRenderer.sortingOrder = -1;
+                    spriteRenderer.sortingOrder = -10;
                     spriteRenderer.sprite = cellSprite;
                     spriteRenderer.color= Color.black;
                     cellPrefab[i, j].transform.localScale = new Vector3(cellSize, cellSize);
@@ -105,22 +108,6 @@ namespace Code_DungeonSystem
             y = Mathf.FloorToInt(WorldPos.y / cellSize);
         }
 
-        public void SetValue(int x, int y, TGridObject value)
-        {
-            if (x >= 0 && y >= 0 && x < width && y < height)
-            {
-                gridArray[x, y] = value;
-                debugTextMesh[x, y].text = gridArray[x, y].ToString();
-            }
-        }
-
-        public void SetValue(Vector3 WorldPos, TGridObject value)
-        {
-            int x, y;
-            WorldToGrid(WorldPos, out x, out y);
-            SetValue(x, y, value);
-        }
-
         public TGridObject GetValue(int x, int y) 
         {
             if (x>= 0 && y >=0 && x< width && y<height)
@@ -140,6 +127,15 @@ namespace Code_DungeonSystem
             return GetValue(x, y);
         }
 
+        public TextMesh GetText(int x, int y) 
+        {
+            return debugTextMesh[x, y];
+        }
+
+        public SpriteRenderer GetCellRender(int x, int y) 
+        {
+            return cellPrefab[x, y].GetComponent<SpriteRenderer>();
+        }
         
         //Just for testing
         ///////////////////////////////////////////////////////////////////////////////////////////////

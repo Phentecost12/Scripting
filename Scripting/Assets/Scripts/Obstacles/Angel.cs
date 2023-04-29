@@ -1,3 +1,4 @@
+using Code_DungeonSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class Angel : Obstaculo
 {
     //Player player = new Player(); //Missing player script
-    public Angel(int poder) : base(poder)
+    public Angel(int poder, Cell cell) : base(poder, cell)
     {
 
     }

@@ -1,4 +1,4 @@
-using Code_DungeonSystem;
+/*using Code_DungeonSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +11,9 @@ public class PathFinding
     public PathFinding(int width, int height) 
     {
         //grid = new Grid<CellTesting>(width,height,10f, (Grid<CellTesting> g, int x, int y) => new CellTesting(g, x,y));
-    }
+    }*/
 
-    public List<CellTesting> FindPath(int startX, int startY, int endX, int endY) 
+    /*public List<CellTesting> FindPath(int startX, int startY, int endX, int endY) 
     {
         CellTesting startCell = grid.GetValue(startX, startY);
         CellTesting endCell = grid.GetValue(endX, endY);
@@ -120,4 +120,4 @@ public class PathFinding
 
         return high;
     }
-}
+}*/
