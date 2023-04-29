@@ -46,6 +46,8 @@ public class Player : MonoBehaviour, ICore
         {
             poderActual += equipmentEquiped[1].Power;
         }
+
+        txt.text = poderActual.ToString();
     }
 
     public void Combat(Obstaculo Enemy)
@@ -219,6 +221,7 @@ public class Player : MonoBehaviour, ICore
             alive = false;
         currentCell = Startcell;
         transform.position = DungeonManager.Instance.Grid.GridToWorld(Startcell.X,Startcell.Y);
+        Debug.Log(vidaActual);
     }
 
     public void OnWining(int suma)
@@ -230,6 +233,7 @@ public class Player : MonoBehaviour, ICore
     public void SumarVida(int cantidad)
     {
         vidaActual += cantidad;
+        Debug.Log(vidaActual);
     }
 
     private Vector3 GetMousePosition() 
@@ -249,6 +253,7 @@ public class Player : MonoBehaviour, ICore
         Cell cell = DungeonManager.Instance.Grid.GetValue(transform.position);
         if ( cell.Enemy != null)
         {
+            Debug.Log(cell.ToString());
             Combat(cell.Enemy);
         }
         else
