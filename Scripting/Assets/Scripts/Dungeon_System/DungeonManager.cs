@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace Code_DungeonSystem
 {
-    class DungeonManager : MonoBehaviour
+    public class DungeonManager : MonoBehaviour
     {
         private Grid<Cell> grid;
         [Header("Tamaño de la cuadricula")]
