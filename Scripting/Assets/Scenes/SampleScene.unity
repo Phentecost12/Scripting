@@ -254,8 +254,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36aea26386231c34da6f2ffc21e76e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTime: 3
+  smoothTime: 1.5
   target: {fileID: 1602042605}
+  dungeonManager: {fileID: 1475051488}
+  boundary: {fileID: 1469905407}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +399,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 25, y: 38}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -408,7 +410,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 100, y: 100}
   m_EdgeRadius: 0
 --- !u!4 &1469905408
 Transform:
