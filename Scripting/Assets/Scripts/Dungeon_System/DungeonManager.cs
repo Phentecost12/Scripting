@@ -160,10 +160,11 @@ namespace Code_DungeonSystem
             return textMesh;
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////
-        ///
+
         public void GenerateEnemy(GameObject enemyPrefab, Vector3 cellPos)
         {
             Quaternion quaternion = new Quaternion(0, 0, 0, 0);
+            cellPos = cellPos+new Vector3(4, -3, 0);
             GameObject prefabInstance = Instantiate(enemyPrefab, cellPos, quaternion);
         }
     }
