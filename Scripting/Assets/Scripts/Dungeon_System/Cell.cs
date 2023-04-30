@@ -5,15 +5,14 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Code_DungeonSystem
-    {
+{
     public class Cell
     {
         Obstaculo OBS = new Obstaculo(0,null);
         Grid<Cell> grid;
         
+        private int x, y;
         
-        int x, y;
-
         public Obstaculo Enemy { get => OBS;}
         public int X { get => x;}
         public int Y { get => y;}
@@ -29,7 +28,6 @@ namespace Code_DungeonSystem
             int r = random.Next(0, 100);
 
             OBS = GetObstacleToSpawn(r);
-
         }
 
         public Obstaculo GetObstacleToSpawn(int r) 
@@ -70,7 +68,6 @@ namespace Code_DungeonSystem
             OBS = null;
             DungeonManager.Instance.Grid.GetCellRender(x,y).color = Color.green;
         }
-
     }
 }
 

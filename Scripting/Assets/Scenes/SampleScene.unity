@@ -211,7 +211,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 40
+  orthographic size: 25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36aea26386231c34da6f2ffc21e76e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTime: 1.5
+  smoothTime: 1
   target: {fileID: 1602042605}
   dungeonManager: {fileID: 1475051488}
   boundary: {fileID: 1469905407}
@@ -410,7 +410,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 100, y: 100}
+  m_Size: {x: 75, y: 75}
   m_EdgeRadius: 0
 --- !u!4 &1469905408
 Transform:
@@ -475,6 +475,7 @@ MonoBehaviour:
   height: 5
   cellSize: 20
   cellSprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  enemyPrefab: {fileID: 1102987310308141802, guid: a68f3ed7a5b8aa344b25a42554ac8b65, type: 3}
 --- !u!1 &1602042602
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,8 +572,8 @@ Transform:
   m_GameObject: {fileID: 1602042602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.64, y: 0.64, z: 0}
-  m_LocalScale: {x: 6.5765, y: 6.5765, z: 6.5765}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1776930499}
   m_Father: {fileID: 0}
