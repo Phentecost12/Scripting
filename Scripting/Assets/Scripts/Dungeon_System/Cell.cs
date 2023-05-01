@@ -41,7 +41,7 @@ namespace Code_DungeonSystem
 
             if (r > 6 && r <= 33)
             {
-                P = new Mago(x,this);
+                P = new Guardia(x,this);
             }
 
             if (r > 34 && r <= 84)

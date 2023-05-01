@@ -16,6 +16,7 @@ namespace Code_DungeonSystem
         [Header("Celda")]
         [SerializeField] private Sprite cellSprite;
         public GameObject enemyPrefab;
+        public Cell lastCell;
         
         public static DungeonManager Instance { get; private set; } = null;
         public Grid<Cell> Grid { get => grid;}
@@ -36,12 +37,15 @@ namespace Code_DungeonSystem
         private void GenerateDungeon(int width, int height, float cellSize) 
         {
             grid = new Grid<Cell>(width, height, cellSize, (Grid<Cell> g, int x, int y) => new Cell(g, x, y),cellSprite);
+            lastCell = grid.GetValue(width - 1, height - 1);
         }
 
         public Cell GetStartCell()
         {
             return grid.GetValue(0, 0);
         }
+
+        
     }
 
     public class Grid<TGridObject> : MonoBehaviour

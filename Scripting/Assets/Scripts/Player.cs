@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Rendering.FilterWindow;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using Unity.VisualScripting;
@@ -36,6 +35,14 @@ public class Player : MonoBehaviour, ICore
     private void Start()
     {
         Startcell = DungeonManager.Instance.GetStartCell();
+    }
+
+    private void Update()
+    {
+        if (currentCell == DungeonManager.Instance.lastCell)
+        {
+            Win_Lose_Manager.Intance.Win();
+        }
     }
 
     public void RecalculatePower()
@@ -218,7 +225,11 @@ public class Player : MonoBehaviour, ICore
     {
         vidaActual--;
         if (vidaActual < 1)
+        {
             alive = false;
+            Win_Lose_Manager.Intance.Lose();
+            return;
+        } 
         currentCell = Startcell;
         transform.position = DungeonManager.Instance.Grid.GridToWorld(Startcell.X,Startcell.Y);
         Debug.Log(vidaActual);
@@ -228,6 +239,10 @@ public class Player : MonoBehaviour, ICore
     {
         poderActual += suma;
         txt.text = poderActual.ToString();
+        if (currentCell == DungeonManager.Instance.lastCell)
+        {
+            Win_Lose_Manager.Intance.Win();
+        }
     }
 
     public void SumarVida(int cantidad)
@@ -245,12 +260,16 @@ public class Player : MonoBehaviour, ICore
 
     void OnMouseDrag()
     {
-        transform.position = GetMousePosition();
+        if (alive)
+        {
+            transform.position = GetMousePosition();
+        }
     }
 
     private void OnMouseUp()
     {
         Cell cell = DungeonManager.Instance.Grid.GetValue(transform.position);
+        currentCell = cell;
         if ( cell.Enemy != null)
         {
             Debug.Log(cell.ToString());
