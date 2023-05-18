@@ -44,8 +44,6 @@ namespace Code_DungeonSystem
         {
             return grid.GetValue(0, 0);
         }
-
-        
     }
 
     public class Grid<TGridObject> : MonoBehaviour
