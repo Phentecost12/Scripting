@@ -9,10 +9,9 @@ public class Mago : Obstaculo
 {
     private Elementos element;
 
-    public Mago(int power , Cell cell) : base(power, cell)
+    public override void SetUp()
     {
-        
-
+        base.SetUp();
         int i = Random.Range(0, 3);
 
         element = (Elementos)Enum.ToObject(typeof(Elementos), i);

@@ -6,10 +6,11 @@ using UnityEngine.Rendering;
 
 namespace Code_DungeonSystem
 {
-    public class Cell
+    public class Cell: MonoBehaviour
     {
-        Obstaculo OBS = new Obstaculo(0,null);
-        Grid<Cell> grid;
+        [SerializeField] private Obstaculo OBS;
+        [SerializeField] TextMesh txt;
+        [SerializeField] private SpriteRenderer bg;
         
         private int x, y;
         
@@ -17,21 +18,25 @@ namespace Code_DungeonSystem
         public int X { get => x;}
         public int Y { get => y;}
 
-        public Cell(Grid<Cell> grid, int x, int y)
+        public void CellConfig(Grid grid, int x, int y) 
         {
-            this.grid = grid;
             this.x = x;
             this.y = y;
 
-            System.Random random= new System.Random();
+            transform.position = grid.GridToWorld(x, y);
+            //grid.AdjustSize(this.gameObject);
+
+            OBS.SetUp();
+
+            txt.text = this.ToString();
+        }
+
+       /* public Obstaculo GetObstacleToSpawn() 
+        {
+            System.Random random = new System.Random();
 
             int r = random.Next(0, 100);
 
-            OBS = GetObstacleToSpawn(r);
-        }
-
-        public Obstaculo GetObstacleToSpawn(int r) 
-        {
             Obstaculo P = new Obstaculo(0, this);
 
             if (r > 0 && r <= 5)
@@ -55,18 +60,26 @@ namespace Code_DungeonSystem
             }
 
             return P;
-        }
+        }*/
 
         public override string ToString()
         {
-            return OBS.Power.ToString() + " ,Tipo " + OBS.GetType();
+            string r = OBS.Power.ToString();
+
+            if (OBS is Mago) 
+            {
+                Mago m = (Mago)OBS;
+                r += " \n";
+                r += m.Element;
+            }
+            return r;
         }
 
         public void ChangeText() 
         {
-            DungeonManager.Instance.Grid.GetText(x, y).text = "";
+            txt.text = "";
             OBS = null;
-            DungeonManager.Instance.Grid.GetCellRender(x,y).color = Color.green;
+            bg.color = Color.green;
         }
     }
 }

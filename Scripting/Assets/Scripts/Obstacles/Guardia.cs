@@ -6,8 +6,5 @@ using UnityEngine;
 
 public class Guardia : Obstaculo
 {
-    public Guardia(int power, Cell cell) : base(power, cell)
-    {
 
-    }
 }

@@ -6,22 +6,20 @@ using Random = UnityEngine.Random;
 
 public enum Elementos { Fire, Water, Earth }
 
-public class Obstaculo
+public abstract class Obstaculo : MonoBehaviour
 {
     int power;
-    public int G;
+    private int G;
     public int probabilidadMin = 1;
     public int probabilidadMax = 10;
-    private Cell currentCell;
+    [SerializeField] private Cell currentCell;
 
     public int Power { get => power; }
 
-    public Obstaculo(int x, Cell cell)
+    public virtual void SetUp() 
     {
         G = GetPower();
-        power = G * x + 1;
-
-        this.currentCell = cell;
+        power = G * currentCell.X + 1;
     }
 
     public int GetPower()
@@ -32,6 +30,7 @@ public class Obstaculo
     public void OnDying()
     {
         currentCell.ChangeText();
+        Destroy(gameObject);
     }
 
     public void OnWining(int addingPower)

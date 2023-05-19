@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106d587350adc0c49ab93b6cf91b0834, type: 3}
+  m_Name: Cell Factory Config
+  m_EditorClassIdentifier: 
+  cells:
+  - {fileID: 8133004409351142092, guid: 9ab644c6dd9ecc045bad12e77fa26b4f, type: 3}
+  - {fileID: 8432212019483333816, guid: d4135590efafdee40ae268c45c395886, type: 3}
+  - {fileID: 4708159503235365765, guid: b8d317643bd6b62468fe44064eb9708c, type: 3}
+  - {fileID: 5367731679416631363, guid: 708a4f0ec535d5e46805c1b9fa402690, type: 3}

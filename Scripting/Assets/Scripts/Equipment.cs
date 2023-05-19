@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Equipment
+public class Equipment : MonoBehaviour
 {
     Elementos element;
-    int power;
+    public int power;
 
-    public Equipment(int power)
+    public void SetUP()
     {
-        this.power = power;
+        this.power = 5;
 
         int i = Random.Range(0, 3);
 

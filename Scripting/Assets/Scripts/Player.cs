@@ -18,7 +18,8 @@ public class Player : MonoBehaviour, ICore
     private Cell Startcell;
     private Cell currentCell;
 
-    private Equipment[] equipmentEquiped = new Equipment[2];
+    public Equipment[] equipmentEquiped = new Equipment[2];
+    public GameObject[] equimpentPLacement = new GameObject[2];
 
     public Cell CurrentCell { get => currentCell; }
 
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour, ICore
             poderActual += equipmentEquiped[1].Power;
         }
 
-        txt.text = poderActual.ToString();
+        txt.text = ToString();
     }
 
     public void Combat(Obstaculo Enemy)
@@ -74,7 +75,7 @@ public class Player : MonoBehaviour, ICore
                 {
                     Mago EnemyMage = (Mago)Enemy;
 
-                    float BonusATK = 0;
+                    float BonusATK = 1;
 
                     switch (EnemyMage.Element)
                     {
@@ -145,28 +146,36 @@ public class Player : MonoBehaviour, ICore
 
     public void AddEquipment(Equipment equipment)
     {
-
+        equipment.SetUP();
         if (equipmentEquiped[0] != null)
         {
             if (equipmentEquiped[1] == null)
             {
                 equipmentEquiped[1] = equipment;
+                equipmentEquiped[1].transform.position = equimpentPLacement[1].transform.position;
+                equipmentEquiped[1].transform.parent = this.gameObject.transform;
             }
             else
             {
                 if (equipment.Power > equipmentEquiped[0].Power)
                 {
                     equipmentEquiped[0] = equipment;
+                    equipmentEquiped[0].transform.position = equimpentPLacement[0].transform.position;
+                    equipmentEquiped[0].transform.parent = this.gameObject.transform;
                 }
                 else if (equipment.Power > equipmentEquiped[1].Power)
                 {
                     equipmentEquiped[1] = equipment;
+                    equipmentEquiped[1].transform.position = equimpentPLacement[1].transform.position;
+                    equipmentEquiped[1].transform.parent = this.gameObject.transform;
                 }
             }
         }
         else
         {
             equipmentEquiped[0] = equipment;
+            equipmentEquiped[0].transform.position = equimpentPLacement[0].transform.position;
+            equipmentEquiped[0].transform.parent = this.gameObject.transform; 
         }
 
         RecalculatePower();
@@ -189,7 +198,7 @@ public class Player : MonoBehaviour, ICore
 
     public void Figth(int i, Obstaculo enemy)
     {
-        if (i > poderActual)
+        if (i > enemy.Power)
         {
             OnDying();
             enemy.OnWining(poderActual);
@@ -238,7 +247,7 @@ public class Player : MonoBehaviour, ICore
     public void OnWining(int suma)
     {
         poderActual += suma;
-        txt.text = poderActual.ToString();
+        txt.text = ToString();
         if (currentCell == DungeonManager.Instance.lastCell)
         {
             Win_Lose_Manager.Intance.Win();
@@ -269,16 +278,35 @@ public class Player : MonoBehaviour, ICore
     private void OnMouseUp()
     {
         Cell cell = DungeonManager.Instance.Grid.GetValue(transform.position);
-        currentCell = cell;
-        if ( cell.Enemy != null)
+        if (cell != null)
         {
-            Debug.Log(cell.ToString());
-            Combat(cell.Enemy);
+            currentCell = cell;
+            Debug.Log(cell.name);
+            if (cell.Enemy != null)
+            {
+                Debug.Log(cell.ToString());
+                Combat(cell.Enemy);
+            }
+            else
+            {
+                Debug.Log("No hay enemigo");
+            }
         }
         else
         {
-            Debug.Log("No hay enemigo");
+            Debug.Log("no hay celda");
         }
+    }
+
+    public override string ToString()
+    {
+        string r;
+        r = poderActual.ToString();
+        r += " \n";
+        r += equipmentEquiped[0] ? equipmentEquiped[0].Element : "";
+        r += " \n";
+        r += equipmentEquiped[1] ? equipmentEquiped[1].Element : "";
+        return r;
     }
 }
 

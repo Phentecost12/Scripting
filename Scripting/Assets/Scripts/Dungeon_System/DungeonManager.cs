@@ -7,7 +7,7 @@ namespace Code_DungeonSystem
 {
     public class DungeonManager : MonoBehaviour
     {
-        private Grid<Cell> grid;
+        private Grid grid;
         [Header("Tamaño de la cuadricula")]
         [SerializeField] private int width;
         [SerializeField] private int height;
@@ -19,7 +19,7 @@ namespace Code_DungeonSystem
         public Cell lastCell;
         
         public static DungeonManager Instance { get; private set; } = null;
-        public Grid<Cell> Grid { get => grid;}
+        public Grid Grid { get => grid;}
 
         private void Awake()
         {
@@ -36,7 +36,7 @@ namespace Code_DungeonSystem
 
         private void GenerateDungeon(int width, int height, float cellSize) 
         {
-            grid = new Grid<Cell>(width, height, cellSize, (Grid<Cell> g, int x, int y) => new Cell(g, x, y),cellSprite);
+            grid = new Grid(width, height, cellSize);
             lastCell = grid.GetValue(width - 1, height - 1);
         }
 
@@ -46,44 +46,43 @@ namespace Code_DungeonSystem
         }
     }
 
-    public class Grid<TGridObject> : MonoBehaviour
+    public class Grid: MonoBehaviour
     {
         private int width;
         private int height;
         private float cellSize;
-        private TGridObject[,] gridArray;
+        private Cell[,] gridArray;
         private TextMesh[,] debugTextMesh;
         private GameObject[,] cellPrefab;
-        private Sprite cellSprite;
 
-        [SerializeField] private DungeonManager dungeonManager = DungeonManager.Instance;
-        [SerializeField] private GameObject enemyPrefab = DungeonManager.Instance.enemyPrefab;
+        //[SerializeField] private DungeonManager dungeonManager = DungeonManager.Instance;
+        //[SerializeField] private GameObject enemyPrefab = DungeonManager.Instance.enemyPrefab;
 
         public int GetWidth { get => width; }
         public int GetHeight { get => height; }
 
-        public Grid(int width, int height, float cellSize, Func<Grid<TGridObject>, int, int, TGridObject> CreateGridObject, Sprite cellSprite)
+        public Grid(int width, int height, float cellSize)
         {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
-            this.cellSprite = cellSprite;
 
-            gridArray = new TGridObject[width, height];
-            debugTextMesh = new TextMesh[width, height]; //Visual
-            cellPrefab = new GameObject[width, height];
+            gridArray = new Cell[width, height];
+            //debugTextMesh = new TextMesh[width, height]; //Visual
+            //cellPrefab = new GameObject[width, height];
 
             for (int x = 0; x < gridArray.GetLength(0); x++)
             {
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
-                    gridArray[x, y] = CreateGridObject(this, x, y);
+                    gridArray[x, y] = Factory.Instance.CreateCell();
+                    gridArray[x, y].CellConfig(this,x,y);
                 }
             }
 
             //Visual
             /////////////////////////////////////////////////////////////////////
-            int count = 0;
+            /*int count = 0;
             for (int i = 0; i < gridArray.GetLength(0); i++)
             {
                 for (int j = 0; j < gridArray.GetLength(1); j++)
@@ -100,7 +99,7 @@ namespace Code_DungeonSystem
                     GenerateEnemy(enemyPrefab, cellPrefab[i,j].transform.position);
                     count++;
                 }
-            }
+            }*/
             //////////////////////////////////////////////////////////////////////
         }
 
@@ -115,7 +114,7 @@ namespace Code_DungeonSystem
             y = Mathf.FloorToInt(WorldPos.y / cellSize);
         }
 
-        public TGridObject GetValue(int x, int y)
+        public Cell GetValue(int x, int y)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
@@ -123,15 +122,20 @@ namespace Code_DungeonSystem
             }
             else
             {
-                return default(TGridObject);
+                return default(Cell);
             }
         }
 
-        public TGridObject GetValue(Vector3 WorldPos)
+        public Cell GetValue(Vector3 WorldPos)
         {
             int x, y;
             WorldToGrid(WorldPos, out x, out y);
             return GetValue(x, y);
+        }
+
+        public void AdjustSize(GameObject obj) 
+        {
+            obj.transform.localScale = new Vector3(cellSize, cellSize);
         }
 
         public TextMesh GetText(int x, int y)
@@ -146,7 +150,7 @@ namespace Code_DungeonSystem
 
         //Just for testing
         ///////////////////////////////////////////////////////////////////////////////////////////////
-        public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sonrtingOrder)
+        /*public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sonrtingOrder)
         {
             GameObject gameObject = new GameObject("World_text", typeof(TextMesh));
             Transform transform = gameObject.transform;
@@ -160,14 +164,14 @@ namespace Code_DungeonSystem
             textMesh.color = color;
             textMesh.GetComponent<MeshRenderer>().sortingOrder = sonrtingOrder;
             return textMesh;
-        }
+        }*/
         ///////////////////////////////////////////////////////////////////////////////////////////////
 
-        public void GenerateEnemy(GameObject enemyPrefab, Vector3 cellPos)
+        /*public void GenerateEnemy(GameObject enemyPrefab, Vector3 cellPos)
         {
             Quaternion quaternion = new Quaternion(0, 0, 0, 0);
             cellPos = cellPos+new Vector3(4, -3, 0);
             GameObject prefabInstance = Instantiate(enemyPrefab, cellPos, quaternion);
-        }
+        }*/
     }
 }
