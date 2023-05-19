@@ -25,6 +25,8 @@ public class Player : MonoBehaviour, ICore
 
     public TextMesh txt;
 
+    public static event Action OnWiningEvents, OnDyingEvents;
+
     private void Awake()
     {
         poderActual = PoderBase;
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour, ICore
         txt.text = poderActual.ToString();
         txt.color = Color.red;
     }
+
 
     private void Start()
     {
@@ -198,7 +201,7 @@ public class Player : MonoBehaviour, ICore
 
     public void Figth(int i, Obstaculo enemy)
     {
-        if (i > enemy.Power)
+        if (i < enemy.Power)
         {
             OnDying();
             enemy.OnWining(poderActual);
@@ -236,7 +239,7 @@ public class Player : MonoBehaviour, ICore
         if (vidaActual < 1)
         {
             alive = false;
-            Win_Lose_Manager.Intance.Lose();
+            OnDyingEvents();
             return;
         } 
         currentCell = Startcell;
@@ -250,7 +253,7 @@ public class Player : MonoBehaviour, ICore
         txt.text = ToString();
         if (currentCell == DungeonManager.Instance.lastCell)
         {
-            Win_Lose_Manager.Intance.Win();
+            OnWiningEvents();
         }
     }
 

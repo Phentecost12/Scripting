@@ -21,6 +21,12 @@ public class Win_Lose_Manager : MonoBehaviour
         winPanel.SetActive(false);
     }
 
+    private void Start()
+    {
+        Player.OnWiningEvents += Win;
+        Player.OnDyingEvents += Lose;
+    }
+
     public void Lose() 
     {
         losePanel.SetActive(true);

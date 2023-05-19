@@ -31,6 +31,11 @@ namespace Code_DungeonSystem
 
             Instance = this;
 
+            
+        }
+
+        private void Start()
+        {
             GenerateDungeon(width, height, cellSize);
         }
 

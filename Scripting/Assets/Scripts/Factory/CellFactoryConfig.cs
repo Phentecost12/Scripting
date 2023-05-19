@@ -21,7 +21,23 @@ public class CellFactoryConfig : ScriptableObject
 
     public Cell GetCellPrefab() 
     {
-       int i = Random.Range(0,cells.Length);
-        return cellDictionary[i];
+       int i = Random.Range(0,100);
+
+        if (i > 0 && i <= 5)
+        {
+            return cellDictionary[0];
+        }
+
+        if (i > 6 && i <= 25)
+        {
+            return cellDictionary[3];
+        }
+
+        if (i > 26 && i <= 40)
+        {
+            return cellDictionary[1];
+        }
+
+        return cellDictionary[2];
     }
 }
