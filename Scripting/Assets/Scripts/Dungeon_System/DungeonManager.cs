@@ -7,6 +7,7 @@ namespace Code_DungeonSystem
 {
     public class DungeonManager : MonoBehaviour
     {
+        //Configuracion de la matrix 
         private Grid grid;
         [Header("Tamaño de la cuadricula")]
         [SerializeField] private int width;
@@ -18,9 +19,11 @@ namespace Code_DungeonSystem
         public GameObject enemyPrefab;
         public Cell lastCell;
         
+        //Singleton
         public static DungeonManager Instance { get; private set; } = null;
         public Grid Grid { get => grid;}
 
+        //Singleton
         private void Awake()
         {
             if (Instance != null)
@@ -30,8 +33,6 @@ namespace Code_DungeonSystem
             }
 
             Instance = this;
-
-            
         }
 
         private void Start()
@@ -39,33 +40,41 @@ namespace Code_DungeonSystem
             GenerateDungeon(width, height, cellSize);
         }
 
+        //Crea e inicializa la matriz
         private void GenerateDungeon(int width, int height, float cellSize) 
         {
             grid = new Grid(width, height, cellSize);
+
+            //Toma la referencia de la celda final
             lastCell = grid.GetValue(width - 1, height - 1);
         }
 
+        //Devuelve la celda inicial 
         public Cell GetStartCell()
         {
             return grid.GetValue(0, 0);
         }
     }
 
+    //Clase matrix
     public class Grid: MonoBehaviour
     {
+        //Numero de celdas que crea a lo ancho
         private int width;
-        private int height;
-        private float cellSize;
-        private Cell[,] gridArray;
-        private TextMesh[,] debugTextMesh;
-        private GameObject[,] cellPrefab;
 
-        //[SerializeField] private DungeonManager dungeonManager = DungeonManager.Instance;
-        //[SerializeField] private GameObject enemyPrefab = DungeonManager.Instance.enemyPrefab;
+        //Numero de celdas que crea a lo alto
+        private int height;
+
+        //Tamaño de las celdas
+        private float cellSize;
+
+        //Matriz de celdas
+        private Cell[,] gridArray;
 
         public int GetWidth { get => width; }
         public int GetHeight { get => height; }
 
+        //Constructor
         public Grid(int width, int height, float cellSize)
         {
             this.width = width;
@@ -73,52 +82,35 @@ namespace Code_DungeonSystem
             this.cellSize = cellSize;
 
             gridArray = new Cell[width, height];
-            //debugTextMesh = new TextMesh[width, height]; //Visual
-            //cellPrefab = new GameObject[width, height];
+
 
             for (int x = 0; x < gridArray.GetLength(0); x++)
             {
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
+                    //Se llama a la fabrica para crear la celda
                     gridArray[x, y] = Factory.Instance.CreateCell();
+
+                    //Se inicializa la celda
                     gridArray[x, y].CellConfig(this,x,y);
                 }
-            }
-
-            //Visual
-            /////////////////////////////////////////////////////////////////////
-            /*int count = 0;
-            for (int i = 0; i < gridArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < gridArray.GetLength(1); j++)
-                {
-
-                    debugTextMesh[i, j] = CreateWorldText(null, gridArray[i, j].ToString(), GridToWorld(i, j) + new Vector3(cellSize, cellSize) * .5f, 20, Color.white, TextAnchor.MiddleCenter, TextAlignment.Center, 5000);
-                    cellPrefab[i, j] = new GameObject("Cell " + count);
-                    SpriteRenderer spriteRenderer = cellPrefab[i, j].AddComponent<SpriteRenderer>();
-                    spriteRenderer.sortingOrder = -10;
-                    spriteRenderer.sprite = cellSprite;
-                    spriteRenderer.color = Color.black;
-                    cellPrefab[i, j].transform.localScale = new Vector3(cellSize, cellSize);
-                    cellPrefab[i, j].transform.position = GridToWorld(i, j) + new Vector3(cellSize, cellSize) * .5f;
-                    GenerateEnemy(enemyPrefab, cellPrefab[i,j].transform.position);
-                    count++;
-                }
-            }*/
-            //////////////////////////////////////////////////////////////////////
+            } 
         }
 
+        //Transforma Coordenadas de matriz a espacio de mundo
         public Vector3 GridToWorld(int x, int y)
         {
             return new Vector3(x, y) * cellSize;
         }
 
+        //Transforma coordenadas de mundo a espacio de matriz
         public void WorldToGrid(Vector3 WorldPos, out int x, out int y)
         {
             x = Mathf.FloorToInt(WorldPos.x / cellSize);
             y = Mathf.FloorToInt(WorldPos.y / cellSize);
         }
 
+        //Devuelve la celda que corresponde al espacio de matrix
         public Cell GetValue(int x, int y)
         {
             if (x >= 0 && y >= 0 && x < width && y < height)
@@ -131,52 +123,12 @@ namespace Code_DungeonSystem
             }
         }
 
+        //Devuelve la celda que corresponde al espacio de mundo
         public Cell GetValue(Vector3 WorldPos)
         {
             int x, y;
             WorldToGrid(WorldPos, out x, out y);
             return GetValue(x, y);
         }
-
-        public void AdjustSize(GameObject obj) 
-        {
-            obj.transform.localScale = new Vector3(cellSize, cellSize);
-        }
-
-        public TextMesh GetText(int x, int y)
-        {
-            return debugTextMesh[x, y];
-        }
-
-        public SpriteRenderer GetCellRender(int x, int y)
-        {
-            return cellPrefab[x, y].GetComponent<SpriteRenderer>();
-        }
-
-        //Just for testing
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-        /*public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sonrtingOrder)
-        {
-            GameObject gameObject = new GameObject("World_text", typeof(TextMesh));
-            Transform transform = gameObject.transform;
-            transform.SetParent(parent, false);
-            transform.localPosition = localPosition;
-            TextMesh textMesh = gameObject.transform.GetComponent<TextMesh>();
-            textMesh.anchor = textAnchor;
-            textMesh.alignment = textAlignment;
-            textMesh.text = text;
-            textMesh.fontSize = fontSize;
-            textMesh.color = color;
-            textMesh.GetComponent<MeshRenderer>().sortingOrder = sonrtingOrder;
-            return textMesh;
-        }*/
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-
-        /*public void GenerateEnemy(GameObject enemyPrefab, Vector3 cellPos)
-        {
-            Quaternion quaternion = new Quaternion(0, 0, 0, 0);
-            cellPos = cellPos+new Vector3(4, -3, 0);
-            GameObject prefabInstance = Instantiate(enemyPrefab, cellPos, quaternion);
-        }*/
     }
 }

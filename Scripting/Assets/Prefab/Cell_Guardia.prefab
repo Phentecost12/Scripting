@@ -199,6 +199,7 @@ MonoBehaviour:
   OBS: {fileID: 5412476974587697142}
   txt: {fileID: 8138550400527228651}
   bg: {fileID: 3642294471181686794}
+  _textColor: {r: 1, g: 0.03137255, b: 0.63529414, a: 1}
 --- !u!1 &3642294472053581184
 GameObject:
   m_ObjectHideFlags: 0

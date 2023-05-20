@@ -11,7 +11,8 @@ public class Equipment : MonoBehaviour
 
     public void SetUP()
     {
-        this.power = 5;
+        int p = Random.Range(2, 6);
+        this.power = p;
 
         int i = Random.Range(0, 3);
 

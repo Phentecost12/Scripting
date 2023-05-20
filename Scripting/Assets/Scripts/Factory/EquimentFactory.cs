@@ -6,6 +6,7 @@ public class EquimentFactory
 {
     private readonly EquipmentFactoryConfig config;
 
+    //Constructor de la fabrica (Se le inyecta la configuracion)
     public EquimentFactory(EquipmentFactoryConfig config) 
     {
         this.config = config;

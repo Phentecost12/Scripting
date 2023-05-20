@@ -6,9 +6,13 @@ public class Win_Lose_Manager : MonoBehaviour
 {
     public GameObject losePanel;
     public GameObject winPanel;
+
+    //Singleton
     public static Win_Lose_Manager Intance { get; private set; } = null;
+    
     private void Awake()
     {
+        //Singleton
         if (Intance != null)
         {
             Destroy(this);
@@ -17,14 +21,19 @@ public class Win_Lose_Manager : MonoBehaviour
 
         Intance = this;
 
+        //Se suscribe al sujeto
+        Player.OnWiningEvents += Win;
+        Player.OnDyingEvents += Lose;
+
         losePanel.SetActive(false);
         winPanel.SetActive(false);
     }
 
-    private void Start()
+    private void OnDestroy()
     {
-        Player.OnWiningEvents += Win;
-        Player.OnDyingEvents += Lose;
+        //Se desuscribe del sujeto
+        Player.OnWiningEvents -= Win;
+        Player.OnDyingEvents -= Lose;
     }
 
     public void Lose() 
